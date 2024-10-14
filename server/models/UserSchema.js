@@ -14,12 +14,22 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
+    otp:{
+        type:String,
+        required:false
+    },
     group:[
        {
         type:mongoose.Schema.Types.ObjectId,
         ref:"GroupSchema"
        }
-    ]
+    ],
+
+    //TODO: isVerified 
+    isverified:{
+        type:Boolean,
+        default:false
+    }
 },{
     timestamps:true
 })

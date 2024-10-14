@@ -6,9 +6,11 @@ import userRoute from "../router/userRoute.js"
 import courseRoute from "../router/courseRoute.js"
 import topicRoute from "../router/topicRoute.js"
 import groupRoute from "../router/groupRoute.js"
+import morgan from "morgan"
 dotenv.config()
 dbConnect()
 const app = express()
+app.use(morgan('dev'))
 //passing Data 
 app.use(express.json())
 app.use(bodyParser.json())
