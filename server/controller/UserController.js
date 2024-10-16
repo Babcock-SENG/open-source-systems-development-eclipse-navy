@@ -103,7 +103,7 @@ export const userLogin = asyncHandler(
 
 export const getProfile = asyncHandler(
     async (req, res) => {
-        const proile = await UserSchema.findById(req.userAuth).select('-password').populate('group')
+        const proile = await UserSchema.findById(req.userAuth).select('-otp').populate('group')
         console.log(req.userAuth)
         res.json({
             "message": "Profile",

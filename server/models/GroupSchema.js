@@ -21,6 +21,16 @@ const groupSchema = new Schema(
             type:String,
             required:true,
             ref:"CourseSchema"
+        },
+        members:[
+            {
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'UserSchema'
+            }
+        ],
+        public:{
+            type:Boolean,
+            default:true
         }
     },
     {
