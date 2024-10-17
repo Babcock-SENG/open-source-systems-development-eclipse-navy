@@ -2,9 +2,22 @@ import GroupSchema from "../models/GroupSchema.js";
 import asyncHandler from "express-async-handler"
 import TopicSchema from "../models/TopicSchema.js";
 import CourseSchema from "../models/CourseSchema.js";
+import UserSchema from "../models/UserSchema.js";
 
 
 // description create new group 
+
+
+const findUserById = async(id) => {
+    try{
+        const user = await UserSchema.findById(id)
+        console.log("user : ", user)
+        return user 
+    }catch(error){
+        return false
+    }
+}
+
 
 export const newGroup = asyncHandler(
     async (req, res) => {
@@ -137,7 +150,7 @@ export const joinGroup = asyncHandler(
     async (req, res) => {
         const { groupId } = req.body
         const userId = req.userAuth
-
+        console.log("userid : ", userId)
         const groupFound = await GroupSchema.findById(groupId)
 
 
@@ -153,6 +166,13 @@ export const joinGroup = asyncHandler(
             }
         }
 
+
+        const user = await findUserById(userId)
+        // console.log("User info :", user)
+        user.group.push(groupFound.id)
+        await user.save()
+
+
        
 
         groupFound.members.push(userId)
@@ -160,8 +180,10 @@ export const joinGroup = asyncHandler(
 
         res.status(201).json({
             status: true,
-            message: "User joined succesfully"
+            message: "User joined succesfully",
+            data : user
         })
+
     }
 )
 

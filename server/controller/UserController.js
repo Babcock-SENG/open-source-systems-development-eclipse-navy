@@ -66,7 +66,7 @@ export const verfiedOtp = asyncHandler(
         }
 
         if (existingUser.otp == otp) {
-            await UserSchema.updateOne({ isverified: true })
+            await existingUser.updateOne({ isverified: true })
             res.status(201).json({
                 success: true,
                 message: "Email verified"
@@ -86,16 +86,29 @@ export const userLogin = asyncHandler(
         const { email, password } = req.body
 
         const userFound = await UserSchema.findOne({ email }).select("-otp ")
-        if (userFound && await bycript.compare(password, userFound?.password)) {
-            res.send({
-                message: `login successful`,
-                userFound,
-                token: gentoken(userFound?._id)
+        // check is the user verified
+        if(userFound.isverified == true){
+
+            if (userFound && await bycript.compare(password, userFound?.password)) {
+                res.send({
+                    message: `login successful`,
+                    userFound,
+                    token: gentoken(userFound?._id)
+                })
+            }
+            else {
+                throw new Error("invalid username or password ")
+            }
+        }
+        else{
+            res.status(400).json({
+                success:false,
+                message:"Verify your Otp",
+                data : userFound
             })
         }
-        else {
-            throw new Error("invalid username or password ")
-        }
+       
+       
     }
 )
 
