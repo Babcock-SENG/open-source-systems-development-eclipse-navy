@@ -11,7 +11,7 @@ import UserSchema from "../models/UserSchema.js";
 const findUserById = async(id) => {
     try{
         const user = await UserSchema.findById(id)
-        console.log("user : ", user)
+        // console.log("user : ", user)
         return user 
     }catch(error){
         return false
