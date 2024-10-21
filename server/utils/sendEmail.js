@@ -26,7 +26,7 @@ export const sendEmail = async (OTP, email, res) => {
             },
             to: email,
             subject: "OTP VERIFICATION CODE ",
-            html: `<p>Use this <b>${OTP}</b> as your otp</p> 
+            html: `<p>Use this <b>${OTP}</b> ebgas your otp</p> 
             <p>This code expires in 5mins </p>`,
         }
 

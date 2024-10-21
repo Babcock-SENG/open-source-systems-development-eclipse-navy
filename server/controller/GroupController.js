@@ -8,12 +8,12 @@ import UserSchema from "../models/UserSchema.js";
 // description create new group 
 
 
-const findUserById = async(id) => {
-    try{
+const findUserById = async (id) => {
+    try {
         const user = await UserSchema.findById(id)
         // console.log("user : ", user)
-        return user 
-    }catch(error){
+        return user
+    } catch (error) {
         return false
     }
 }
@@ -173,7 +173,7 @@ export const joinGroup = asyncHandler(
         await user.save()
 
 
-       
+
 
         groupFound.members.push(userId)
         await groupFound.save()
@@ -181,8 +181,33 @@ export const joinGroup = asyncHandler(
         res.status(201).json({
             status: true,
             message: "User joined succesfully",
-            data : user
+            data: user
         })
+
+    }
+)
+
+export const privateGroup = asyncHandler(
+    async (req, res) => {
+        const { groupId, isPublic } = req.body
+
+        const group = await GroupSchema.findById(groupId)
+
+        if (!group) {
+            return res.status(404).json({
+                success: "false ",
+                message: "No Group Found "
+            })
+        }
+        await group.updateOne({ public: isPublic })
+        await group.save()
+
+        return res.status(200).json({
+            success: "true",
+            message: "Group private ",
+            data: group
+        })
+
 
     }
 )
